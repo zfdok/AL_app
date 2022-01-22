@@ -1,0 +1,56 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/message/message",
+    "pages/my/my",
+    "pages/history/history",
+    "pages/device/device",
+    "pages/auth/login"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "安冷云",
+    "navigationBarBackgroundColor": "#2980b9",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#3cc51f",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/image/home_d.png",
+        "selectedIconPath": "static/image/home_a.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/device/device",
+        "iconPath": "static/image/device_d.png",
+        "selectedIconPath": "static/image/device_a.png",
+        "text": "设备"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "iconPath": "static/image/history_d.png",
+        "selectedIconPath": "static/image/history_a.png",
+        "text": "数据"
+      },
+      {
+        "pagePath": "pages/message/message",
+        "iconPath": "static/image/message_d.png",
+        "selectedIconPath": "static/image/message_a.png",
+        "text": "消息"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "iconPath": "static/image/wo_d.png",
+        "selectedIconPath": "static/image/wo_a.png",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

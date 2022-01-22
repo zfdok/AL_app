@@ -1,0 +1,155 @@
+{
+	// 如果您是通过uni_modules形式引入uView，可以忽略此配置
+	"easycom": {
+		"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [{
+		"path": "pages/index/index",
+		"style": {
+			"navigationBarTitleText": "首页",
+			"navigationStyle": "custom"
+		}
+	}, {
+		"path": "pages/message/message",
+
+		"style": {
+			"enablePullDownRefresh": true,
+			"navigationBarTitleText": "消息"
+		}
+	}, {
+		"path": "pages/my/my",
+		"style": {
+			"navigationBarTitleText": "个人中心",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/history/history",
+		"style": {
+			"navigationBarTitleText": "历史数据",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/device/device",
+		"style": {
+			"navigationBarTitleText": "设备",
+			"navigationStyle": "custom"
+		}
+	}, {
+		"path": "pages/auth/login",
+		"style": {
+			"navigationBarTitleText": "登录",
+			"enablePullDownRefresh": false
+		}
+	}, {
+		"path": "pages/device/device_setting",
+		"style": {
+			"navigationBarTitleText": "设备设置",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/my/my_info",
+		"style": {
+			"navigationStyle": "custom",
+			"navigationBarTitleText": "个人资料",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/my/my_money",
+		"style": {
+			"navigationBarTitleText": "短信账户",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/my/my_device",
+		"style": {
+			"navigationBarTitleText": "我的设备",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/my/my_question",
+		"style": {
+			"navigationBarTitleText": "常见问题",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/my/my_introduce",
+		"style": {
+			"navigationBarTitleText": "设备使用说明",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/my/my_privacy",
+		"style": {
+			"navigationBarTitleText": "服务条款及隐私",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/my/my_info_phone",
+		"style": {
+			"navigationBarTitleText": "修改手机号",
+			"enablePullDownRefresh": false
+		}
+
+	}    ,{
+            "path" : "pages/history/history_rec",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "历史数据",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/my/my_info_pass",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "安冷云",
+		"navigationBarBackgroundColor": "#2980b9",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#3cc51f",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/image/home_d.png",
+			"selectedIconPath": "static/image/home_a.png",
+			"text": "首页"
+		}, {
+			"pagePath": "pages/device/device",
+			"iconPath": "static/image/device_d.png",
+			"selectedIconPath": "static/image/device_a.png",
+			"text": "设备"
+		},  {
+			"pagePath": "pages/message/message",
+			"iconPath": "static/image/message_d.png",
+			"selectedIconPath": "static/image/message_a.png",
+			"text": "消息"
+		}, {
+			"pagePath": "pages/my/my",
+			"iconPath": "static/image/wo_d.png",
+			"selectedIconPath": "static/image/wo_a.png",
+			"text": "我的"
+		}]
+	}
+
+}

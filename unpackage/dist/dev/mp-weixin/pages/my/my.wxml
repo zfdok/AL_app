@@ -1,0 +1,1 @@
+<view><button type="default" data-event-opts="{{[['tap',[['btn_logout',['$event']]]]]}}" bindtap="__e">logOut</button></view>
