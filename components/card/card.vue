@@ -33,6 +33,10 @@
 			</view>
 		</view>
 		<slot></slot>
+		<view class="tags">
+			<u-tag class="tag_info" v-for="(tag,index) in device.tags" size="mini"  :text="tag.name" :bgColor="tag.color" :borderColor="tag.color"></u-tag>
+		</view>
+		
 		<view class="card_footer">
 			<view class="card_footer_title">
 				{{device.timeinfo}}
@@ -146,7 +150,14 @@
 		border: {
 			radius: 20rpx;
 		}
-
+		.tags{
+			display: flex;
+			flex-wrap: wrap;
+			.tag_info{
+				margin-right: 4rpx;
+				margin-bottom: 8rpx;
+			}
+		}
 		.card_header {
 			display: flex;
 			justify-content: space-between;

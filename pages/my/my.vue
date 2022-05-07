@@ -7,7 +7,7 @@
 				<view class="user_info_role">{{vuex_user.position.CN}}</view>
 			</view>
 			<view class="user_arrow">
-				<u-icon name="arrow-right" color="#ffffff" size="24" ></u-icon>
+				<u-icon name="arrow-right" color="#ffffff" size="24"></u-icon>
 			</view>
 		</view>
 		<view class="account">
@@ -32,12 +32,12 @@
 					</u-cell>
 					<u-cell icon="photo" title="默认设备类型" @click="default_product_show=true">
 					</u-cell>
-					<u-cell icon="coupon" title="常见问题" @click="to_page_my_question">
+					<!-- 					<u-cell icon="coupon" title="常见问题" @click="to_page_my_question">
 						<u-icon slot="right-icon" size="18" name="arrow-right"></u-icon>
-					</u-cell>
-					<u-cell icon="heart" title="设备使用说明" @click="to_page_my_introduce">
+					</u-cell> -->
+					<!-- 				<u-cell icon="heart" title="设备使用说明" @click="to_page_my_introduce">
 						<u-icon slot="right-icon" size="18" name="arrow-right"></u-icon>
-					</u-cell>
+					</u-cell> -->
 					<u-cell icon="eye" title="版本信息及更新" @click="get_update">
 					</u-cell>
 					<u-cell icon="more-circle" title="服务条款及隐私" @click="to_page_my_privacy">
@@ -162,10 +162,9 @@
 				})
 			},
 			update_confim() {
-				if(this.new_version == this.vuex_version){
+				if (this.new_version == this.vuex_version) {
 					this.update_show = false
-				}else{
-					console.log("更新程序调用")
+				} else {
 					this.update_show = false
 				}
 			},
@@ -174,13 +173,14 @@
 			},
 			get_update() {
 				this.update_show = true
-				if (this.new_version == this.vuex_version) {
-					this.new_version_text = "已更新至最新版本"
-				} else {
-					this.new_version_text = `发现新版本:${this.new_version}`
-					this.new_version_confirmText = "立即更新"
-				}
-			}
+				this.new_version_text = "已更新至最新版本"
+				// if (this.new_version == this.vuex_version) {
+				// 	this.new_version_text = "已更新至最新版本"
+				// } else {
+				// 	this.new_version_text = `发现新版本:${this.new_version}`
+				// 	this.new_version_confirmText = "立即更新"
+				// }
+			},
 		}
 	}
 </script>

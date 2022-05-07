@@ -79,7 +79,6 @@
 
 		},
 		onShow() {
-			console.log("reget")
 			this.get_userinfo()
 		},
 		methods: {

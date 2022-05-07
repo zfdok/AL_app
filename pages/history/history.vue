@@ -8,7 +8,7 @@
 					<text class="u-collapse-content">记录设备: {{params.name}}({{params.device_name}})</text>
 					<text class="u-collapse-content">开始时间: {{rec.start_time}}</text>
 					<text class="u-collapse-content">结束时间: {{rec.last_time}}</text>
-					<u-button type="primary" plain @click="goto_a_rec(rec.id,rec.start_time,rec.last_time)">查看历史数据</u-button>
+					<u-button type="primary" plain @click="goto_a_rec(rec.id,rec.start_time,rec.last_time,rec.tempL,rec.tempU,rec.recspan,rec.id)">查看历史数据</u-button>
 				</u-collapse-item>
 			</u-collapse>
 		</view>
@@ -31,6 +31,7 @@
 			if (!this.$u.utils.isLogin()) return
 			this.params = options
 			this.get_history_list()
+			
 		},
 		methods: {
 			async get_history_list() {
@@ -55,7 +56,7 @@
 					}, 1000)
 				}
 			},
-			goto_a_rec(rec_id,start_time,last_time) {
+			goto_a_rec(rec_id,start_time,last_time,tempL,tempU,recspan,recid) {
 				let user = this.params.user
 				let type = this.params.type
 				let name = this.params.name
@@ -69,7 +70,11 @@
 					product_id,
 					rec_id,
 					start_time,
-					last_time
+					last_time,
+					tempL,
+					tempU,
+					recspan,
+					recid,
 				}
 				uni.$u.route({
 					url: 'pages/history/history_rec',

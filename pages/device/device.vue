@@ -29,6 +29,10 @@
 						</view>
 					</card>
 				</view>
+				<u-empty :show="devices_online.length==0"
+					icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无在线设备" textColor="#333" textSize="16"
+					width="200" height="200" marginTop="80">
+				</u-empty>
 			</view>
 			<view v-if="curNow == 1">
 				<view v-for="(device_offline,index) in devices_offline" :key="'offline-'+index">
@@ -39,12 +43,20 @@
 						</view>
 					</card>
 				</view>
+				<u-empty :show="devices_offline.length==0"
+					icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无离线设备" textColor="#333" textSize="16"
+					width="200" height="200" marginTop="80">
+				</u-empty>
 			</view>
 			<view v-if="curNow == 2">
 				<view v-for="(device_unactive,index) in devices_unactive" :key="'unactive-'+index">
 					<card @card_click="to_detial_page(index)" :device="device_unactive">
 					</card>
 				</view>
+				<u-empty :show="devices_unactive.length==0"
+					icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无未激活设备" textColor="#333" textSize="16"
+					width="200" height="200" marginTop="80">
+				</u-empty>
 			</view>
 			<view v-if="curNow == 3">
 				<view v-for="(device_online,index) in devices_online" :key="'online-'+index">
@@ -57,6 +69,10 @@
 				</view>
 				<view v-for="(device_unactive,index) in devices_unactive" :key="'unactive-'+index">
 				</view>
+				<u-empty :show="devices.length==0"
+					icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无设备" textColor="#333" textSize="16"
+					width="200" height="200" marginTop="80">
+				</u-empty>
 			</view>
 		</view>
 	</view>
@@ -82,16 +98,63 @@
 		watch: {
 			// 获取设备列表后更新设备基本信息和最新信息
 			async devices() {
-				this.devices_online = []
-				this.devices_offline = []
-				this.devices_unactive = []
+
+			}
+		},
+		onLoad() {
+			if (!this.$u.utils.isLogin()) return
+			clearInterval(time_d)
+			time_d = setInterval(() => {
+				let pages = getCurrentPages();
+				let curPage = pages[pages.length - 1].route;
+				if (curPage == 'pages/device/device') {
+					this.get_device()
+				}
+			}, 60000)
+
+		},
+		onShow() {
+			this.get_device()
+		},
+		methods: {
+			async get_tags(device) {
+				const params = {
+					device
+				}
+				const res = await this.$u.api.get_device_tags({
+					params
+				})
+				return JSON.parse(res.data.tag).tags
+			},
+			to_detial_page(index) {
+				this.select_index = this.select_index == index ? 10000 : index
+			},
+			// 获取设备清单
+			async get_device() {
+				uni.showLoading({
+					title: '加载中...',
+				});
 				let user = this.vuex_user.name
 				let type = this.vuex_product_list[this.vuex_product_index].type
-				this.devices.forEach(async (device) => {
+				const params = {
+					user,
+					type
+				}
+				const res = await this.$u.api.get_user_devicelist_by_type({
+					params
+				})
+				this.devices = res.data.list
+				uni.hideLoading();
+				//--------------------------------------------------
+				let devices_online = []
+				let devices_offline = []
+				let devices_unactive = []
+
+				for (let i = 0; i < this.devices.length; i++) {
 					let now_date = new Date();
-					let last_time = new Date(device.last_time);
+					let last_time = new Date(this.devices[i].last_time);
 					// 更新设备名
-					let device_name = device.device_name
+					let device_name = this.devices[i].device_name
 					const params = {
 						user,
 						type,
@@ -100,11 +163,11 @@
 					const res = await this.$u.api.get_device({
 						params
 					})
-					device.name = res.data.desc == "" ? "未名设备" : res.data.desc
+					this.devices[i].name = res.data.desc == "" ? "未名设备" : res.data.desc
 					//更新设备最后上传时间
-					if (device.status == 1) {
-						device.timeinfo = "设备未激活"
-						device.device_data = {
+					if (this.devices[i].status == 1) {
+						this.devices[i].timeinfo = "设备未激活"
+						this.devices[i].device_data = {
 							temp: "-.--",
 							humi: "-.--",
 							le: 0,
@@ -112,9 +175,10 @@
 							start_time: "--.--",
 							last_time: "--.--",
 						}
-						this.devices_unactive.push(device)
+						devices_unactive.push(this.devices[i])
 					} else {
-						device.timeinfo = `${new Date(device.last_time).format("yyyy/MM/dd hh:mm:ss")}`
+						this.devices[i].timeinfo =
+							`${new Date(this.devices[i].last_time).format("yyyy/MM/dd hh:mm:ss")}`
 						//更新设备温湿度信息
 						const res2 = await this.$u.api.get_device_latest({
 							params
@@ -142,70 +206,60 @@
 									break
 							}
 						})
-						device.device_data = device_data
+						this.devices[i].device_data = device_data
 						// 更新设备位置信息
 						const res3 = await this.$u.api.get_device_latest_lbs({
 							params
 						})
-
-						device.le = res3.data.lon
-						device.ln = res3.data.lat
-						device.markers = [{
-							latitude: device.ln, //纬度
-							longitude: device.le, //经度
+						if (JSON.stringify(res3.data) == "{}") {
+							this.devices[i].le = 116.39747
+							this.devices[i].ln = 39.9080
+						} else {
+							this.devices[i].le = res3.data.lon != "" ? res3.data.lon : 0
+							this.devices[i].ln = res3.data.lat != "" ? res3.data.lat : 0
+						}
+						this.devices[i].markers = [{
+							latitude: this.devices[i].ln, //纬度
+							longitude: this.devices[i].le, //经度
 							iconPath: '/static/device_location.png', //显示的图标 
 							callout: {
 								display: 'ALWAYS',
-								content: `🚩当前位置:\n🌏东经${device.le.toFixed(2)},🌏北纬${device.ln.toFixed(2)}`,
+								content: `🚩当前位置:\n🌏东经${this.devices[i].le.toFixed(2)},🌏北纬${this.devices[i].ln.toFixed(2)}`,
 							}
 
 						}]
+
+						// 更新标签
+						let res4 = await this.get_tags(this.devices[i].device_name)
+						this.devices[i].tags = res4
+
 						//根据设备状态分类
-						if (device.status == 2 || now_date - last_time < 420000) {
-							device.status = 2
-							this.devices_online.push(device)
-						} else if (device.status == 3) {
-							this.devices_offline.push(device)
+						if (this.devices[i].status == 2 || now_date - last_time < 420000) {
+							this.devices[i].status = 2
+							devices_online.push(this.devices[i])
+						} else if (this.devices[i].status == 3) {
+							devices_offline.push(this.devices[i])
 						}
 					}
-				})
-			}
-		},
-		onLoad() {
-			if (!this.$u.utils.isLogin()) return
-			clearInterval(time_d)
-			time_d = setInterval(() => {
-				let pages = getCurrentPages();
-				let curPage = pages[pages.length - 1].route;
-				if (curPage == 'pages/device/device') {
-					this.get_device()
 				}
-			}, 60000)
-
-		},
-		onShow() {
-			this.get_device()
-		},
-		methods: {
-			to_detial_page(index) {
-				this.select_index = this.select_index == index ? 10000 : index
-			},
-			// 获取设备清单
-			async get_device() {
-				uni.showLoading({
-					title: '加载中...',
-				});
-				let user = this.vuex_user.name
-				let type = this.vuex_product_list[this.vuex_product_index].type
-				const params = {
-					user,
-					type
-				}
-				const res = await this.$u.api.get_user_devicelist_by_type({
-					params
+				let devices_names = []
+				devices_online.forEach(device => {
+					devices_names.push(device.device_name)
 				})
-				this.devices = res.data.list
-				uni.hideLoading();
+				let devices_online_sorted = []
+				devices_names = devices_names.sort(function(a, b) {
+					return a.localeCompare(b)
+				})
+				for (let i = 0; i < devices_names.length; i++) {
+					devices_online.forEach(device => {
+						if (device.device_name == devices_names[i]) {
+							devices_online_sorted.push(device)
+						}
+					})
+				}
+				this.devices_online = devices_online_sorted
+				this.devices_offline = devices_offline
+				this.devices_unactive = devices_unactive
 				return true
 			},
 			async navigationFlashTap() {

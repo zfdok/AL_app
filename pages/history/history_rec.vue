@@ -37,7 +37,7 @@
 		<view v-if="curNow == 3">
 			<view class="cur_content">
 				<u-list>
-					<u-list-item class="cur_content_box" v-for="(data, index) in datas" :key="index">
+					<u-list-item class="cur_content_box" v-for="(data, index) in datas_show" :key="index">
 						<u-tag :text="data.timestamp"></u-tag>
 						<view class="">
 							<view class="cur_content_box1">
@@ -53,6 +53,18 @@
 				</u-list>
 			</view>
 		</view>
+		<view class="tools" v-show="curNow ==0 || curNow ==1 || curNow ==3"
+			:class="(curNow ==0 || curNow ==1 )?'item_routed':''">
+			<view class="tools_btn">
+				<u-button type="success" mini shape="circle" @click="lastPage" :disabled="!pageup_btn_enabled"
+					class="btn1">←
+				</u-button>
+				<u-button type="success" mini shape="circle" @click="nextPage" :disabled="!pagedown_btn_enabled"
+					class="btn2">→
+				</u-button>
+			</view>
+		</view>
+
 	</view>
 </template>
 
@@ -64,6 +76,9 @@
 				curNow: 0,
 				rec: {},
 				datas: [],
+				datas_reverse: [],
+				datas_show: [],
+				page_index: 0,
 				temp_chartdata: {
 					categories: [],
 					series: [{
@@ -93,39 +108,30 @@
 					dottedLine: true, //是否虚线
 					arrowLine: true, //带箭头的线 开发者工具暂不支持该属性
 				}],
-				markers: []
+				markers: [],
+				pageup_btn_enabled: false,
+				pagedown_btn_enabled: true,
 			};
 		},
 		onLoad(options) {
 			this.rec = options
 			this.get_device_history()
+			// console.log(this.rec.tempU)
+			// console.log(this.rec.tempL)
 		},
 		watch: {
 			datas() {
-				this.temp_chartdata.categories = []
-				this.humi_chartdata.categories = []
-				this.temp_chartdata.series[0].data = []
-				this.humi_chartdata.series[0].data = []
 				this.polyline[0].points = []
 
-				let categories = []
-				let temp_series = []
-				let humi_series = []
 				let location_series = []
 				this.datas.forEach((data) => {
-					categories.push(data.timestamp)
-					temp_series.push(data.temp)
-					humi_series.push(data.humi)
 					location_series.push({
 						latitude: data.ln,
 						longitude: data.le,
 						// timespan: data.timestamp
 					})
 				})
-				this.temp_chartdata.categories = categories
-				this.humi_chartdata.categories = categories
-				this.temp_chartdata.series[0].data = temp_series
-				this.humi_chartdata.series[0].data = humi_series
+
 				this.polyline[0].points = location_series
 
 				if (this.polyline[0]) {
@@ -154,9 +160,72 @@
 					})
 
 				}
+			},
+			datas_reverse() {
+				this.page_index = 0
+				this.datas_show = this.datas_reverse.slice(this.page_index * 120, this.page_index * 120 + 120)
+				if (this.page_index + 120 > this.datas_reverse.length) {
+					this.pagedown_btn_enabled = false
+				} else {
+					this.pagedown_btn_enabled = true
+				}
+			},
+			datas_show() {
+				this.temp_chartdata.categories = []
+				this.humi_chartdata.categories = []
+				this.temp_chartdata.series[0].data = []
+				this.humi_chartdata.series[0].data = []
+
+				let categories = []
+				let temp_series = []
+				let humi_series = []
+
+				this.datas_show.forEach((data) => {
+					categories.push(data.timestamp)
+					temp_series.push(data.temp)
+					humi_series.push(data.humi)
+				})
+				this.temp_chartdata.categories = categories
+				this.humi_chartdata.categories = categories
+				this.temp_chartdata.series[0].data = temp_series
+				this.humi_chartdata.series[0].data = humi_series
+			},
+			page_index() {
+				if (this.page_index <= 0) {
+					this.pageup_btn_enabled = false
+				} else {
+					this.pageup_btn_enabled = true
+				}
+				if (this.page_index + 120 > this.datas_reverse.length) {
+					this.pagedown_btn_enabled = false
+				} else {
+					this.pagedown_btn_enabled = true
+				}
+			},
+			curNow() {
+				if (this.curNow == 3)
+					this.page_index = 0
 			}
 		},
-
+		onNavigationBarButtonTap(v) {
+			if (v.index == 1) {
+				uni.$u.route({
+					url: 'pages/history/history_pdf',
+					params: {
+						datas: JSON.stringify(this.datas),
+						rec: JSON.stringify(this.rec)
+					}
+				})
+			} else if (v.index == 0) {
+				uni.$u.route({
+					url: 'pages/printer/printer',
+					params: {
+						datas: JSON.stringify(this.datas),
+						rec: JSON.stringify(this.rec)
+					}
+				})
+			}
+		},
 		methods: {
 			sectionChange(index) {
 				this.curNow = index;
@@ -174,7 +243,6 @@
 				setTimeout(() => {
 					uni.hideLoading();
 				}, 6000)
-
 				let params = {
 					type: this.rec.type,
 					device: this.rec.device_name,
@@ -186,12 +254,38 @@
 					params
 				})
 				this.datas = res.data
+				this.datas_reverse = JSON.parse(JSON.stringify(res.data)).reverse()
 				if (res) {
 					setTimeout(() => {
 						uni.hideLoading();
 					}, 500)
 				}
-			}
+			},
+			lastPage() {
+				if ((this.page_index - 1) * 120 >= 0) {
+					uni.showToast({
+						icon: "loading",
+						duration: 1500
+					})
+					this.page_index--
+					this.datas_show = this.datas_reverse.slice(this.page_index * 120, this.page_index * 120 + 120)
+				} else {
+					this.pageup_btn_enabled = false
+					this.page_index = 0
+				}
+			},
+			nextPage() {
+				if ((this.page_index + 1) * 120 <= this.datas_reverse.length) {
+					uni.showToast({
+						icon: "loading",
+						duration: 1500
+					})
+					this.page_index++
+					this.datas_show = this.datas_reverse.slice(this.page_index * 120, this.page_index * 120 + 120)
+				} else {
+					this.pagedown_btn_enabled = false
+				}
+			},
 		}
 	}
 </script>
@@ -231,15 +325,21 @@
 	}
 
 	.charts-box {
+		// transform:rotate(90deg);
+		position: absolute;
 		margin-top: 40px;
-		width: 100%;
-		height: 400px;
+		left: 5px;
+		right: 5px;
+		top: 50px;
+		bottom: 10px;
+		// width: 100%;
+		// height: 600px;
 	}
 
 	.map_content {
 		margin-top: 100rpx;
 		width: 100%;
-		height: 600px;
+		height: 650px;
 		background-color: #2979FF;
 	}
 
@@ -285,5 +385,31 @@
 		font-size: 24rpx;
 		color: #717171;
 		padding-right: 20rpx;
+	}
+
+	.tools {
+		position: absolute;
+		width: 85px;
+		right: 5px;
+		bottom: 50px;
+		opacity: 0.92;
+
+		.tools_btn {
+			display: flex;
+
+			.btn1 {
+				margin-right: 5px;
+			}
+		}
+	}
+
+	.item_routed {
+		transform: rotate(90deg);
+	}
+
+	.printer {
+		.btn1 {}
+
+		.btn2 {}
 	}
 </style>

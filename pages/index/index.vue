@@ -13,33 +13,25 @@
 						<u-avatar :src="item.thumb" @click="product_selected(item, index)" size="50"></u-avatar>
 						<text class="scroll-list__goods-item__text">{{ item.name }}</text>
 					</u-grid-item>
+					<u-grid-item>
+						<u-avatar icon="scan" size="50" fontSize="32" @click="scan_new"></u-avatar>
+						<text class="scroll-list__goods-item__text">添加设备</text>
+					</u-grid-item>
 				</u-grid>
 			</view>
 		</u-sticky>
 		<view class="content">
 			<view class="ad">
-				<u-swiper class="ad_swiper" :list="swiper_list" indicator indicatorMode="line" circular radius=10>
+				<u-swiper class="ad_swiper" :list="swiper_list" indicator indicatorMode="line" circular radius=10
+					keyName="img" :autoplay="true" @click="swiper_clicked">
 				</u-swiper>
 			</view>
 
 			<view class="dongtai">
 				<view class="dongtai__title">安冷云动态</view>
-				虚拟测试数据
-				{{vuex_user}}
-				虚拟测试数据
-				{{vuex_token}}
-				虚拟测试数据
-				{{vuex_user}}
-				虚拟测试数据
-				{{vuex_token}}
-				虚拟测试数据
-				{{vuex_user}}
-				虚拟测试数据
-				{{vuex_token}}
-				虚拟测试数据
-				{{vuex_user}}
-				虚拟测试数据
-				{{vuex_token}}
+				<view v-if="news_list.length !=0">
+					<newscard v-for="news in news_list" :news="news" @card_click="news_click(news)"></newscard>
+				</view>
 			</view>
 		</view>
 
@@ -50,18 +42,61 @@
 	export default {
 		data() {
 			return {
-				swiper_list: ['https://img.anlengyun.com/anlengAPP/ad1.jpg',
-					'https://img.anlengyun.com/anlengAPP/ad2.jpg',
-					'https://img.anlengyun.com/anlengAPP/ad3.jpg'
-				],
+				swiper_list: [{
+					"id": 4,
+					"img": "https://img.anlengyun.com/anlengAPP/ad4.png",
+					"url": "https://anlengyun.com/news/test1.html"
+				}, {
+					"id": 3,
+					"img": "https://img.anlengyun.com/anlengAPP/ad3.jpg",
+					"url": "https://anlengyun.com/news/test2.html"
+				}, {
+					"id": 2,
+					"img": "https://img.anlengyun.com/anlengAPP/ad2.jpg",
+					"url": "https://anlengyun.com"
+				}, {
+					"id": 1,
+					"img": "https://img.anlengyun.com/anlengAPP/ad1.jpg",
+					"url": "https://anlengyun.com"
+				}, ],
+				news_list: [],
 				product_list: []
 			}
 		},
-		onLoad() {
+		async onLoad() {
 			if (!this.$u.utils.isLogin()) return
 			this.product_list = this.vuex_product_list
+			await this.get_appswiper_list()
+			await this.get_news_list()
 		},
 		methods: {
+			swiper_clicked(index) {
+				if (plus.os.name == 'Android') { //判断平台为Android
+					plus.runtime.openURL(this.swiper_list[index].url);
+				} else if (plus.os.name == 'iOS') { //判断平台为IOS
+					plus.runtime.openURL(this.swiper_list[index].url);
+				} else {
+
+				}
+			},
+			async get_appswiper_list() {
+				let params = {}
+				let res = await this.$u.api.get_swiper({
+					params
+				})
+				if (res.data) {
+					this.swiper_list = res.data
+				}
+			},
+			async get_news_list() {
+				let params = {}
+				let res = await this.$u.api.get_news({
+					params
+				})
+				if (res.data) {
+					this.news_list = res.data
+				}
+			},
 			product_selected(item, index) {
 				this.$u.vuex('vuex_product_index', index)
 				uni.$u.route({
@@ -73,6 +108,42 @@
 				uni.$u.route({
 					type: 'reLaunch',
 					url: 'pages/my/my',
+				})
+			},
+			news_click(news) {
+				// console.log(news)
+				uni.$u.route({
+					url: 'pages/index/index_news',
+					params: news
+				})
+			},
+			scan_new() {
+				uni.scanCode({
+					onlyFromCamera: true,
+					scanType: ['barCode'],
+					success: function(res) {
+						let code_res = {
+							type: res.scanType,
+							value: res.result
+						}
+						if (res.scanType == "CODE_128") {
+							uni.showToast({
+								icon: "success",
+								title: "扫描成功!",
+								duration: 3000
+							})
+							uni.$u.route({
+								url: 'pages/index/index_scan',
+								params: code_res
+							})
+						} else {
+							uni.showToast({
+								icon: "error",
+								title: "失败,请重试",
+								duration: 3000
+							})
+						}
+					}
 				})
 			}
 		},

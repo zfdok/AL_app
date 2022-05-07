@@ -9,6 +9,8 @@
 		<view v-for="(notice,index) in alert_notices" :key="'alert'+index">
 			<noticecard @card_btn_click="readnotice(notice)" :notice="notice"></noticecard>
 		</view>
+		<u-empty :show="notices.length == 0" mode="message" icon="https://img.anlengyun.com/anlengAPP/empty01.png">
+		</u-empty>
 	</view>
 </template>
 
@@ -78,10 +80,8 @@
 					params
 				})
 				this.notices = res.data
-				console.log(this.notices)
 			},
 			async readnotice(notice) {
-				console.log(notice.msg_id)
 				let params = {
 					msg_id: notice.msg_id
 				}

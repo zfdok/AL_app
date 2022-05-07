@@ -14,10 +14,12 @@
 					<view class="device_card_content">
 						设备剩余有效期:
 						<view class="device_card_content_day">
-							<u--text bold block size=18 :text="device.day_left"
-								:color="device.day_left<=30?'#ee0000':'#007f00'"></u--text>
+							<u--text bold block size=16 :text="device.day_left"
+								:color="device.day_left<=30?'#b93d00':'#007f00'"></u--text>
 						</view>
 						天
+						<u--text bold block size=12 text="，即将过期解绑, 请尽快处理!" v-show="device.day_left<=30"
+							color="#b93d00"></u--text>
 					</view>
 					<view class="device_card_content_btn">
 						<u-button type="primary" icon="shopping-cart" :color="device.day_left<=30?'#b93d00':'#feba92'"
@@ -27,6 +29,10 @@
 				</view>
 			</view>
 		</view>
+		<u-empty :show="devices.length==0"
+			icon="https://img.anlengyun.com/anlengAPP/empty01.png" text="无设备" textColor="#333" textSize="16"
+			width="200" height="200" marginTop="80">
+		</u-empty>
 		<u-modal :show="charge_show" title="请联系客服" @confirm="charge_show=false">
 			<view class="slot-content ">
 				<u-avatar shape="square" size=250 src='https://img.anlengyun.com/my_wechat.jpg'></u-avatar>
@@ -53,7 +59,6 @@
 		},
 		methods: {
 			async get_userdeviceinfo() {
-				console.log("get_userdeviceinfo")
 				let params = {
 					username: this.vuex_user.name
 				}

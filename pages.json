@@ -99,25 +99,62 @@
 			"enablePullDownRefresh": false
 		}
 
-	}    ,{
-            "path" : "pages/history/history_rec",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "历史数据",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/my/my_info_pass",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	}, {
+		"path": "pages/history/history_rec",
+		"style": {
+			"navigationBarTitleText": "数据记录",
+			"enablePullDownRefresh": false,
+			"app-plus": {
+				"titleNView": {
+					"buttons": [{
+						"text": "\ue607",
+						"fontSrc": "/static/font/iconfont2.ttf",
+						"fontSize": "24px"
+					}, {
+						"text": "\ue8e8",
+						"fontSrc": "/static/font/iconfont3.ttf",
+						"fontSize": "24px"
+					}]
+				}
+			}
+		}
+
+	}, {
+		"path": "pages/my/my_info_pass",
+		"style": {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/index/index_news",
+		"style": {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/printer/printer",
+		"style": {
+			"navigationBarTitleText": "",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/history/history_pdf",
+		"style": {
+			"navigationBarTitleText": "验证报告",
+			"enablePullDownRefresh": false
+		}
+
+	}, {
+		"path": "pages/index/index_scan",
+		"style": {
+			"navigationBarTitleText": "添加设备",
+			"enablePullDownRefresh": false
+		}
+
+	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "安冷云",
@@ -139,7 +176,7 @@
 			"iconPath": "static/image/device_d.png",
 			"selectedIconPath": "static/image/device_a.png",
 			"text": "设备"
-		},  {
+		}, {
 			"pagePath": "pages/message/message",
 			"iconPath": "static/image/message_d.png",
 			"selectedIconPath": "static/image/message_a.png",

@@ -17,7 +17,7 @@
 			<view class="hint">
 				登录代表同意
 				<text class="link">安冷云用户协议、隐私政策，</text>
-				并授权使用您的安冷云账号信息（如昵称、头像、收获地址）以便您统一管理
+				并授权使用您的安冷云账号信息（如昵称、头像、收货地址）以便您统一管理
 			</view>
 		</view>
 	</view>
@@ -27,8 +27,8 @@
 	export default {
 		data() {
 			return {
-				user_name: 'admin',
-				user_pass: '888888'
+				user_name: '',
+				user_pass: ''
 			}
 		},
 		computed: {
@@ -50,7 +50,6 @@
 						name: this.user_name,
 						password: this.user_pass
 					})
-					console.log(login_res)
 					if (login_res.code === 200) {
 						this.$u.vuex('vuex_token', login_res.data.token)
 						this.$u.vuex('vuex_user', login_res.data.user)

@@ -2,6 +2,10 @@ const http = uni.$u.http
 
 const install = (Vue, vm) => {
 	// const login = (params, config = {}) => http.post('/user/login', params, config)
+	//---------------APP相关----------------------//
+	const get_swiper = (params) => http.get('/alapp/get_swiper', params)
+	const get_news = (params) => http.get('/alapp/get_news', params)
+	const get_version = (params) => http.get('/alapp/get_version', params)
 	//---------------用户相关----------------------//
 	// 登录
 	const login = (params) => http.post('/user/login', params)
@@ -40,6 +44,14 @@ const install = (Vue, vm) => {
 	const set_device_name = (params) => http.get('/onenet/set_device_name', params)
 	// 设置某设备的名称
 	const set_device_desired = (params) => http.get('/onenet/set_device_desired', params)
+	// 检测设备是否被绑定
+	const check_device_binded = (params) => http.get('/onenet/check_device_exist', params)
+	// 将设备添加至项目
+	const bind_device_to_project = (params) => http.get('/onenet/set_device_to_project', params)
+	// 将设备添加至用户
+	const bind_device_to_group = (params) => http.get('/onenet/set_device_to_group', params)
+	const get_device_tags = (params) => http.get('/onenet/get_device_tags', params)
+	const set_device_tags = (params) => http.get('/onenet/set_device_tags', params)
 	//---------------消息相关----------------------//
 	// 获取用户消息
 	const get_headernotice = (params) => http.get('/headernotice/getnotice', params)
@@ -50,6 +62,9 @@ const install = (Vue, vm) => {
 	const get_device_history_list = (params) => http.get('/history/get_device_history_list', params)
 	// 获取设备历史记录
 	const get_device_history = (params) => http.get('/history/get_device_history', params)
+	const gen_report = (params) => http.get('/history/gen_report', params)
+	const set_rec_info = (params) => http.get('/history/app_set_rec_info', params)
+	
 	get_device_history
 	vm.$u.api = {
 		login,
@@ -74,6 +89,16 @@ const install = (Vue, vm) => {
 		readnotice,
 		get_device_history_list,
 		get_device_history,
+		get_swiper,
+		get_news,
+		get_version,
+		gen_report,
+		set_rec_info,
+		check_device_binded,
+		bind_device_to_project,
+		bind_device_to_group,
+		get_device_tags,
+		set_device_tags,
 	}
 }
 
