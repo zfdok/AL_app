@@ -1,6 +1,6 @@
 <template>
 	<view>
-		???
+		此功能未开发
 		<!-- 		<view class="charts-box">
 			<qiun-data-charts type="line" :chartData="chartData" :echartsH5="true" :echartsApp="true"
 				:disableScroll="true" :ontouch="true"/>

@@ -180,13 +180,16 @@
 			this.info.product_id = this.rec.product_id;
 		},
 		methods: {
+			// 选择货物种类
 			sexSelect(e) {
 				this.info.goods_type = e.name
 				this.goods_type_show = false
 			},
+			// 修改索引
 			sectionChange(index) {
 				this.curNow = index;
 			},
+			// 生成PDF
 			async gen_pdf() {
 				uni.showLoading({
 					title: '更新信息设置',
@@ -212,6 +215,7 @@
 				uni.hideLoading()
 				this.download_enabled = true
 			},
+			// 分享PDF
 			share_pdf() {
 				let that = this
 				uni.shareWithSystem({
@@ -227,6 +231,7 @@
 					}
 				})
 			},
+			// 下载PDF
 			Download() {
 				let that = this
 				var url = `https://anlengyun.com/report/${that.filename}.pdf`

@@ -14,7 +14,7 @@
 		</view>
 		<view class="box2">
 			请前往安冷云PC版获取更多数据
-			<u-link href="https://anlengyun.com" text="anlengyun.com"></u-link>
+			<u-link href="https://cloud.anlengyun.com" text="anlengyun.com"></u-link>
 		</view>
 	</view>
 </template>
@@ -34,6 +34,7 @@
 			
 		},
 		methods: {
+			// 获取历史数据清单
 			async get_history_list() {
 				uni.showLoading({
 					title: '加载中...',
@@ -56,6 +57,7 @@
 					}, 1000)
 				}
 			},
+			// 去某个历史记录详情页
 			goto_a_rec(rec_id,start_time,last_time,tempL,tempU,recspan,recid) {
 				let user = this.params.user
 				let type = this.params.type

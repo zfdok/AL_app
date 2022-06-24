@@ -67,9 +67,9 @@
 			@close="service_show=false">
 			<view class="slot-content">
 				<u-link class="service_link" href="tel:0538-8926007" text="客服电话: 0538-8926007"></u-link>
-				<u-link class="service_link" href="http://www.anleng-tec.com/" text="安冷科技官网: anleng-tec.com">
-				</u-link>
-				<u-link class="service_link" href="https://anlengyun.com/" text="安冷云官网: anlengyun.com"></u-link>
+<!-- 				<u-link class="service_link" href="http://www.anleng-tec.com/" text="安冷科技官网: anleng-tec.com">
+				</u-link> -->
+				<!-- <u-link class="service_link" href="https://anlengyun.com/" text="安冷云官网: anlengyun.com"></u-link> -->
 				<u-link class="service_link" href="mailto:sdalkj@126.com" text="发送邮件: sdalkj@126.com"></u-link>
 			</view>
 		</u-modal>

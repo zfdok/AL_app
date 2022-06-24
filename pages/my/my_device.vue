@@ -58,6 +58,7 @@
 			this.get_userdeviceinfo()
 		},
 		methods: {
+			//获取用户设备
 			async get_userdeviceinfo() {
 				let params = {
 					username: this.vuex_user.name
@@ -85,6 +86,7 @@
 					this.devices.push(device)
 				})
 			},
+			// 充值按钮(预留)
 			btn_charge() {
 				this.charge_show = true
 			}

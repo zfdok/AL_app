@@ -222,6 +222,7 @@
 			}
 		},
 		methods: {
+			// 保存标签
 			async tag_summit() {
 				let tag_txt = `{"tags":${JSON.stringify(this.tags)}}`
 				const params = {
@@ -253,6 +254,7 @@
 					this.tag_modal_show = false
 				}, 1500)
 			},
+			//求中英文字符串长度
 			strlen(str) {
 				var len = 0;
 				for (var i = 0; i < str.length; i++) {
@@ -266,6 +268,7 @@
 				}
 				return len;
 			},
+			// 添加新标签
 			add_new_tag() {
 				if (this.tags.length < 10) {
 					if (this.strlen(this.new_tag_title) > 2 && this.strlen(this.new_tag_title) < 15) {
@@ -305,9 +308,11 @@
 					})
 				}
 			},
+			// 删除标签
 			del_tag(tag, index) {
 				this.tags.splice(index, 1)
 			},
+			// 添加标签
 			add_tag(tag, index) {
 				if (this.tags.length < 10) {
 					this.tags.push(tag)
@@ -319,6 +324,7 @@
 					})
 				}
 			},
+			// 获取期望值
 			async get_desired() {
 				uni.showLoading({
 					title: '加载中...',
@@ -342,6 +348,7 @@
 					uni.hideLoading();
 				}, 500)
 			},
+			// 提交
 			async submit() {
 				uni.showLoading({
 					title: '加载中...',
@@ -367,6 +374,7 @@
 					}, 500)
 				}
 			},
+			// 获取标签
 			async get_tags(device) {
 				const params = {
 					device

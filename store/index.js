@@ -75,7 +75,7 @@ const store = new Vuex.Store({
 			type: 'lcjzx',
 			thumb: 'https://img.anlengyun.com/lcjzx.png'
 		}, ],
-		vuex_version: '1.0.6',
+		vuex_version: '1.0.9',
 		vuex_default_page: lifeData.vuex_default_page ? lifeData.vuex_default_page : "/pages/index/index",
 		vuex_default_product_index: lifeData.vuex_default_product_index ? lifeData.vuex_default_product_index :
 			0,

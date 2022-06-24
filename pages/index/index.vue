@@ -70,15 +70,17 @@
 			await this.get_news_list()
 		},
 		methods: {
+			// 轮播图点击
 			swiper_clicked(index) {
-				if (plus.os.name == 'Android') { //判断平台为Android
-					plus.runtime.openURL(this.swiper_list[index].url);
-				} else if (plus.os.name == 'iOS') { //判断平台为IOS
-					plus.runtime.openURL(this.swiper_list[index].url);
-				} else {
+				// if (plus.os.name == 'Android') { //判断平台为Android
+				// 	plus.runtime.openURL(this.swiper_list[index].url);
+				// } else if (plus.os.name == 'iOS') { //判断平台为IOS
+				// 	plus.runtime.openURL(this.swiper_list[index].url);
+				// } else { 
 
-				}
+				// }
 			},
+			// 获取轮播图内容
 			async get_appswiper_list() {
 				let params = {}
 				let res = await this.$u.api.get_swiper({
@@ -88,6 +90,7 @@
 					this.swiper_list = res.data
 				}
 			},
+			// 获取新闻内容
 			async get_news_list() {
 				let params = {}
 				let res = await this.$u.api.get_news({
@@ -97,6 +100,7 @@
 					this.news_list = res.data
 				}
 			},
+			// 选择产品
 			product_selected(item, index) {
 				this.$u.vuex('vuex_product_index', index)
 				uni.$u.route({
@@ -104,12 +108,14 @@
 					url: 'pages/device/device',
 				})
 			},
+			// 点击头像
 			avatar_click() {
 				uni.$u.route({
 					type: 'reLaunch',
 					url: 'pages/my/my',
 				})
 			},
+			// 点击新闻
 			news_click(news) {
 				// console.log(news)
 				uni.$u.route({
@@ -117,6 +123,7 @@
 					params: news
 				})
 			},
+			// 扫描新设备
 			scan_new() {
 				uni.scanCode({
 					onlyFromCamera: true,

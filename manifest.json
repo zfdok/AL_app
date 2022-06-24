@@ -2,8 +2,8 @@
     "name" : "安冷云",
     "appid" : "__UNI__8CC5B18",
     "description" : "安冷云",
-    "versionName" : "1.0.6",
-    "versionCode" : 1060,
+    "versionName" : "1.0.9",
+    "versionCode" : 1090,
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
@@ -19,8 +19,7 @@
         /* 模块配置 */
         "modules" : {
             "Bluetooth" : {},
-            "Maps" : {},
-            "Share" : {}
+            "Maps" : {}
         },
         /* 应用发布信息 */
         "distribute" : {

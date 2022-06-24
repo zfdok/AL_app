@@ -35,6 +35,19 @@
 					<u-number-box v-model="user.sms_day_limit" integer :min="1" :max="100"></u-number-box>
 					条
 				</u-form-item>
+				<uni-forms-item label="报警手机号:" prop="user.alert_phones" borderBottom>
+					报警手机号:
+					<u--input class="phone_input" type="number" placeholder="请输入手机号" border="surround" prefixIcon="phone" prefixIconStyle="font-size: 16px;color: #909399;margin-right:20px"
+						v-model="user.alert_phones[0]"></u--input>
+					<u--input class="phone_input" type="number" placeholder="请输入手机号" border="surround" prefixIcon="phone" prefixIconStyle="font-size: 16px;color: #909399;margin-right:20px"
+						v-model="user.alert_phones[1]"></u--input>
+					<u--input class="phone_input" type="number" placeholder="请输入手机号" border="surround" prefixIcon="phone" prefixIconStyle="font-size: 16px;color: #909399;margin-right:20px"
+						v-model="user.alert_phones[2]"></u--input>
+					<u--input class="phone_input" type="number" placeholder="请输入手机号" border="surround" prefixIcon="phone" prefixIconStyle="font-size: 16px;color: #909399;margin-right:20px"
+						v-model="user.alert_phones[3]"></u--input>
+					<u--input class="phone_input" type="number" placeholder="请输入手机号" border="surround" prefixIcon="phone" prefixIconStyle="font-size: 16px;color: #909399;margin-right:20px"
+						v-model="user.alert_phones[4]"></u--input>
+				</uni-forms-item>
 			</u--form>
 			<u-button class="submit_btn" type="primary" @click="submit">提交</u-button>
 		</view>
@@ -59,7 +72,7 @@
 					email: null,
 					commpany: "山东安冷",
 					usericon: 'https://img.anlengyun.com/user_avatar.png',
-					address: "山东省泰安市泰山区灵山大街国家小区18楼1单元",
+					address: "山东省泰安市泰山区",
 					phone: "15853823881",
 					create_time: "2021-04-14 10:04:40",
 					last_login: "2021-04-14 10:04:40",
@@ -67,6 +80,7 @@
 					sms_span: 10,
 					sms_day_limit: 30,
 					sms_day_count: 30,
+					alert_phones: [],
 				},
 				charge_show: false
 			};
@@ -75,12 +89,18 @@
 			this.get_userinfo()
 			uni.showToast({
 				title: '加载中...',
-				duration:1000,
-				icon:'loading'
+				duration: 1000,
+				icon: 'loading'
 			})
+		},
+		watch: {
+			user() {
+				this.user.alert_phones = JSON.parse(this.user.alert_phones)
+			}
 		},
 		methods: {
 			async submit() {
+				let phone_str = JSON.stringify(this.user.alert_phones)
 				uni.showLoading({
 					title: '设置中...',
 				});
@@ -94,7 +114,8 @@
 					address: this.user.address,
 					email: this.user.email,
 					sms_span: this.user.sms_span,
-					sms_day_limit: this.user.sms_day_limit
+					sms_day_limit: this.user.sms_day_limit,
+					alert_phones: phone_str
 				}
 				let res = await this.$u.api.set_user_info({
 					params
@@ -104,15 +125,16 @@
 				});
 				setTimeout(() => {
 					uni.hideLoading();
+					this.get_userinfo()
 				}, 500)
-				this.get_userinfo()
+				
 			},
 			async get_userinfo() {
 				uni.showLoading({
-					title: '加载中...',
+					title: '刷新中...',
 				});
 				setTimeout(() => {
-					uni.hideLoading();
+					uni.hideLoading(); 
 				}, 6000)
 				let params = {
 					name: this.vuex_user.name
@@ -167,8 +189,8 @@
 
 	.setting_card {
 		position: fixed;
-		top: 200rpx;
-		bottom: 300rpx;
+		top: 50rpx;
+		bottom: 150rpx;
 		left: 60rpx;
 		right: 60rpx;
 		z-index: -1;
@@ -189,10 +211,16 @@
 			margin-bottom: 20rpx;
 		}
 
+		.phone_input {
+			margin: 10px;
+		}
+
 		.submit_btn {
-			width: 100%;
-			position: relative;
-			bottom: -80px; //table.height - div_height
+			width: 60%;
+			position: fixed;
+			left: 20px;
+			right: 20px;
+			bottom: 100px; //table.height - div_height
 		}
 	}
 
@@ -208,7 +236,8 @@
 			flex-grow: 1;
 		}
 	}
-	.modal_weichat{
+
+	.modal_weichat {
 		width: 100%;
 	}
 </style>

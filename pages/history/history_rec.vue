@@ -227,6 +227,7 @@
 			}
 		},
 		methods: {
+			//节点切换
 			sectionChange(index) {
 				this.curNow = index;
 				uni.showLoading({
@@ -236,6 +237,7 @@
 					uni.hideLoading();
 				}, 1000)
 			},
+			// 获取设备历史数据
 			async get_device_history() {
 				uni.showLoading({
 					title: '加载中...',
@@ -261,6 +263,7 @@
 					}, 500)
 				}
 			},
+			// 最后一页
 			lastPage() {
 				if ((this.page_index - 1) * 120 >= 0) {
 					uni.showToast({
@@ -274,6 +277,7 @@
 					this.page_index = 0
 				}
 			},
+			// 下一页
 			nextPage() {
 				if ((this.page_index + 1) * 120 <= this.datas_reverse.length) {
 					uni.showToast({

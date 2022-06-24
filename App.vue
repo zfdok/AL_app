@@ -4,11 +4,11 @@
 			let res = await this.check_at_start()
 			this.product_list = this.vuex_product_list
 			this.$u.vuex('vuex_product_index', this.vuex_default_product_index)
-			if (res.code == 200) {
-				uni.switchTab({
-					url: this.vuex_default_page
-				});
-			}
+			// if (res.code == 200) {
+			// 	uni.switchTab({
+			// 		url: this.vuex_default_page
+			// 	});
+			// }
 		},
 		onShow: async function() {
 			let res = await this.check_appversion()

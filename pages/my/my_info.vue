@@ -82,6 +82,7 @@
 			this.get_userinfo()
 		},
 		methods: {
+			// 获取用户信息
 			async get_userinfo() {
 				uni.showLoading({
 					title: '加载中...',
@@ -100,6 +101,7 @@
 					uni.hideLoading();
 				}, 500)
 			},
+			// 设置按钮
 			async btn_set() {
 				uni.showLoading({
 					title: '设置中...',
@@ -126,6 +128,7 @@
 					uni.hideLoading();
 				}, 500)
 			},
+			// 设置手机号
 			async btn_phone_set() {
 				uni.$u.route({
 					url: 'pages/my/my_info_phone',
@@ -134,9 +137,11 @@
 					}
 				})
 			},
+			//返回
 			back_arrow_click() {
 				uni.navigateBack();
 			},
+			//登出
 			logout() {
 				this.$u.vuex('vuex_token', "")
 				uni.$u.route({
@@ -144,6 +149,7 @@
 					url: 'pages/auth/login',
 				})
 			},
+			//修改密码
 			async btn_change_pass() {
 				uni.$u.route({
 					url: 'pages/my/my_info_pass',

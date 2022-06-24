@@ -39,12 +39,15 @@
 			}
 		},
 		methods: {
+			//返回
 			btn_back() {
 				uni.navigateBack({})
 			},
+			// 确定
 			btn_ok() {
 				uni.navigateBack({})
 			},
+			// 绑定设备
 			async check_binded() {
 				uni.showLoading({
 					title: "检测设备绑定情况"
@@ -70,6 +73,7 @@
 				}
 				return res.data.success
 			},
+			// 绑定设备至项目
 			async device_binded_to_project() {
 				uni.showLoading({
 					title: "添加设备至项目"
@@ -109,6 +113,7 @@
 				}
 				return res.data.success
 			},
+			// 绑定设备至项目分组
 			async device_binded_to_group() {
 				uni.showLoading({
 					title: "绑定用户设备"

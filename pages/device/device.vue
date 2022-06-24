@@ -29,9 +29,8 @@
 						</view>
 					</card>
 				</view>
-				<u-empty :show="devices_online.length==0"
-					icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无在线设备" textColor="#333" textSize="16"
-					width="200" height="200" marginTop="80">
+				<u-empty :show="devices_online.length==0" icon="https://img.anlengyun.com/anlengAPP/empty02.png"
+					text="无在线设备" textColor="#333" textSize="16" width="200" height="200" marginTop="80">
 				</u-empty>
 			</view>
 			<view v-if="curNow == 1">
@@ -43,9 +42,8 @@
 						</view>
 					</card>
 				</view>
-				<u-empty :show="devices_offline.length==0"
-					icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无离线设备" textColor="#333" textSize="16"
-					width="200" height="200" marginTop="80">
+				<u-empty :show="devices_offline.length==0" icon="https://img.anlengyun.com/anlengAPP/empty02.png"
+					text="无离线设备" textColor="#333" textSize="16" width="200" height="200" marginTop="80">
 				</u-empty>
 			</view>
 			<view v-if="curNow == 2">
@@ -53,9 +51,8 @@
 					<card @card_click="to_detial_page(index)" :device="device_unactive">
 					</card>
 				</view>
-				<u-empty :show="devices_unactive.length==0"
-					icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无未激活设备" textColor="#333" textSize="16"
-					width="200" height="200" marginTop="80">
+				<u-empty :show="devices_unactive.length==0" icon="https://img.anlengyun.com/anlengAPP/empty02.png"
+					text="无未激活设备" textColor="#333" textSize="16" width="200" height="200" marginTop="80">
 				</u-empty>
 			</view>
 			<view v-if="curNow == 3">
@@ -69,9 +66,8 @@
 				</view>
 				<view v-for="(device_unactive,index) in devices_unactive" :key="'unactive-'+index">
 				</view>
-				<u-empty :show="devices.length==0"
-					icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无设备" textColor="#333" textSize="16"
-					width="200" height="200" marginTop="80">
+				<u-empty :show="devices.length==0" icon="https://img.anlengyun.com/anlengAPP/empty02.png" text="无设备"
+					textColor="#333" textSize="16" width="200" height="200" marginTop="80">
 				</u-empty>
 			</view>
 		</view>
@@ -111,12 +107,12 @@
 					this.get_device()
 				}
 			}, 60000)
-
 		},
-		onShow() {
-			this.get_device()
+		async onShow() {
+			await this.get_device()
 		},
 		methods: {
+			// 添加标签
 			async get_tags(device) {
 				const params = {
 					device
@@ -126,6 +122,7 @@
 				})
 				return JSON.parse(res.data.tag).tags
 			},
+			// 去详情页
 			to_detial_page(index) {
 				this.select_index = this.select_index == index ? 10000 : index
 			},
@@ -144,7 +141,7 @@
 					params
 				})
 				this.devices = res.data.list
-				uni.hideLoading();
+				
 				//--------------------------------------------------
 				let devices_online = []
 				let devices_offline = []
@@ -236,6 +233,19 @@
 						//根据设备状态分类
 						if (this.devices[i].status == 2 || now_date - last_time < 420000) {
 							this.devices[i].status = 2
+							let name = this.devices[i].device_name
+							const params = {
+								user,
+								type,
+								device_name,
+								name,
+							}
+							const res = await this.$u.api.get_device_desired({
+								params
+							})
+							this.devices[i].tempL = res.data.tempL.value
+							this.devices[i].tempU = res.data.tempU.value
+							this.devices[i].period = res.data.period.value
 							devices_online.push(this.devices[i])
 						} else if (this.devices[i].status == 3) {
 							devices_offline.push(this.devices[i])
@@ -260,8 +270,10 @@
 				this.devices_online = devices_online_sorted
 				this.devices_offline = devices_offline
 				this.devices_unactive = devices_unactive
+				uni.hideLoading();
 				return true
 			},
+			// 刷新按钮
 			async navigationFlashTap() {
 				let res = await this.get_device()
 				if (res === true) {

@@ -34,9 +34,10 @@
 		</view>
 		<slot></slot>
 		<view class="tags">
-			<u-tag class="tag_info" v-for="(tag,index) in device.tags" size="mini"  :text="tag.name" :bgColor="tag.color" :borderColor="tag.color"></u-tag>
+			<u-tag class="tag_info" v-for="(tag,index) in device.tags" size="mini" :text="tag.name" :bgColor="tag.color"
+				:borderColor="tag.color"></u-tag>
 		</view>
-		
+
 		<view class="card_footer">
 			<view class="card_footer_title">
 				{{device.timeinfo}}
@@ -87,13 +88,20 @@
 					this.statusBtnColor = "linear-gradient(to right, rgb(149, 149, 149),rgb(190, 164, 164))"
 					break
 				case 2:
-					this.statusColor = "linear-gradient(to right,rgb(170, 255, 255) ,rgb(170, 255, 165) )"
+					
+					if (parseFloat(this.device.device_data.temp) < parseFloat(this.device.tempL)) {
+						this.statusColor = "linear-gradient(to right,rgb(255, 162, 182) ,rgb(170, 255, 165) )"
+					}
+					else if(parseFloat(this.device.device_data.temp) > parseFloat(this.device.tempU)) {
+						this.statusColor = "linear-gradient(to right,rgb(255, 162, 182) ,rgb(170, 255, 165) )"
+					}else{
+						this.statusColor = "linear-gradient(to right,rgb(170, 255, 255) ,rgb(170, 255, 165) )"
+					}
 					this.statusBtnColor = "linear-gradient(to right, rgb(73, 75, 181),rgb(0, 170, 127))"
 					break
 				default:
 					break
 			}
-
 		},
 		methods: {
 			handle_click() {
@@ -150,14 +158,17 @@
 		border: {
 			radius: 20rpx;
 		}
-		.tags{
+
+		.tags {
 			display: flex;
 			flex-wrap: wrap;
-			.tag_info{
+
+			.tag_info {
 				margin-right: 4rpx;
 				margin-bottom: 8rpx;
 			}
 		}
+
 		.card_header {
 			display: flex;
 			justify-content: space-between;
